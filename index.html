@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Digital Workshop</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#ffffff;
+    --surface:#ffffff;
+    --surface2:#f8fafc;
+    --text:#111827;
+    --muted:#6b7280;
+    --primary:#2563EB;
+    --border:#e5e7eb;
+    --shadow:0 20px 50px rgba(15,23,42,.08);
+    --radius:24px;
+}
+
+body.dark{
+    --bg:#0b1120;
+    --surface:#111827;
+    --surface2:#1f2937;
+    --text:#f8fafc;
+    --muted:#9ca3af;
+    --border:#334155;
+    --shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Inter,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    transition:.35s;
+    overflow-x:hidden;
+}
+
+section{
+    padding:100px 8%;
+}
+
+h1,h2,h3{
+    letter-spacing:-1px;
+}
+
+p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+img{
+    width:100%;
+    display:block;
+}
+
+/* NAV */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:999;
+    transition:.35s;
+    backdrop-filter:blur(16px);
+    background:rgba(255,255,255,.75);
+    border-bottom:1px solid rgba(255,255,255,.25);
+}
+
+body.dark nav{
+    background:rgba(17,24,39,.72);
+}
+
+nav.shrink{
+    padding:8px 0;
+}
+
+nav.hide{
+    transform:translateY(-120%);
+}
+
+.nav-inner{
+    max-width:1300px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 8%;
+}
+
+.logo{
+    font-size:1.2rem;
+    font-weight:800;
+}
+
+.logo span{
+    color:var(--primary);
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--primary);
+}
+
+.toggle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    background:var(--surface);
+    box-shadow:var(--shadow);
+    color:var(--text);
+    font-size:18px;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    background:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1800&auto=format&fit=crop") center/cover;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(10,15,25,.62);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    color:white;
+    max-width:850px;
+}
+
+.hero h1{
+    font-size:clamp(3rem,7vw,6rem);
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.hero h2{
+    font-size:clamp(1.2rem,2.2vw,2rem);
+    font-weight:400;
+    margin-bottom:15px;
+}
+
+.hero small{
+    color:#d1d5db;
+    font-size:1rem;
+    display:block;
+    margin-bottom:40px;
+}
+
+.btn{
+    display:inline-block;
+    padding:16px 34px;
+    background:var(--primary);
+    color:white;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.35s;
+    box-shadow:0 18px 40px rgba(37,99,235,.35);
+}
+
+.btn:hover{
+    transform:translateY(-4px) scale(1.02);
+}
+
+/* TITLES */
+
+.title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.title h2{
+    font-size:2.6rem;
+}
+
+.title p{
+    margin-top:15px;
+}
+
+/* SKILLS */
+
+.skills{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:40px;
+}
+
+.skill-menu{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.skill-item{
+    padding:22px;
+    border-radius:20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.35s;
+    box-shadow:var(--shadow);
+}
+
+.skill-item.active,
+.skill-item:hover{
+    background:var(--primary);
+    color:white;
+    transform:translateX(6px);
+}
+
+.skill-display{
+    background:var(--surface);
+    border-radius:30px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.skill-content{
+    display:none;
+    animation:fade .5s;
+}
+
+.skill-content.active{
+    display:block;
+}
+
+.skill-content img{
+    height:350px;
+    object-fit:cover;
+}
+
+.skill-body{
+    padding:35px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+
+.gallery img{
+    border-radius:18px;
+    height:180px;
+    object-fit:cover;
+}
+
+/* PROJECTS */
+
+.project-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:var(--surface);
+    border-radius:26px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-12px);
+}
+
+.card img{
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:25px;
+}
+
+/* ABOUT */
+
+.about{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:50px;
+    align-items:center;
+}
+
+.portrait{
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.portrait img{
+    height:480px;
+    object-fit:cover;
+}
+
+/* CONTACT */
+
+.contact{
+    text-align:center;
+}
+
+.contact-box{
+    max-width:650px;
+    margin:auto;
+    background:var(--surface);
+    padding:55px;
+    border-radius:30px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+}
+
+.contact a{
+    color:var(--primary);
+    font-weight:600;
+    text-decoration:none;
+}
+
+/* FOOTER */
+
+footer{
+    padding:40px;
+    text-align:center;
+    color:var(--muted);
+}
+
+/* ANIMATIONS */
+
+.fade{
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+
+.fade.show{
+    opacity:1;
+    transform:none;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:none;
+}
+}
+
+@media(max-width:900px){
+
+.skills,
+.about{
+grid-template-columns:1fr;
+}
+
+.gallery{
+grid-template-columns:1fr;
+}
+
+.nav-links{
+display:none;
+}
+
+.hero h1{
+font-size:3.5rem;
+}
+
+section{
+padding:80px 6%;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<nav id="navbar">
+<div class="nav-inner">
+
+<div class="logo">
+<span>The</span> Digital Workshop
+</div>
+
+<div class="nav-links">
+<a href="#home">Home</a>
+<a href="#projects">Projects</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+<button class="toggle" id="themeToggle">☀️</button>
+</div>
+
+</div>
+</nav>
+
+<section class="hero" id="home">
+
+<div class="hero-content fade">
+
+<h1>The Digital Workshop</h1>
+
+<h2>Programming beautiful digital experiences.</h2>
+
+<small>
+Programming • Photography • Filmmaking • Editing
+</small>
+
+<a class="btn" href="#projects">
+View My Work
+</a>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="title fade">
+<h2>Creative Disciplines</h2>
+<p>Programming leads every project while visual storytelling elevates every experience.</p>
+</div>
+
+<div class="skills fade">
+
+<div class="skill-menu">
+
+<div class="skill-item active" data-target="programming">
+Programming
+</div>
+
+<div class="skill-item" data-target="photo">
+Photography
+</div>
+
+<div class="skill-item" data-target="film">
+Filmmaking
+</div>
+
+<div class="skill-item" data-target="editing">
+Editing
+</div>
+
+</div>
+
+<div class="skill-display">
+
+<div class="skill-content active" id="programming">
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop">
+<div class="skill-body">
+<h3>Programming</h3>
+<p>
+Beautiful, responsive websites are at the heart of The Digital Workshop. One featured project includes a bespoke website created for a Cornwall author promoting <strong>A Flower in Winter</strong>, combining elegant design with performance and accessibility.
+</p>
+</div>
+</div>
+
+<div class="skill-content" id="photo">
+<div class="gallery">
+<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop">
+<img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200&auto=format&fit=crop">
+<img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop">
+</div>
+
+<div class="skill-body">
+<h3>Photography</h3>
+<p>
+Capturing authentic moments, architecture, landscapes and creative imagery that complements modern digital brands.
+</p>
+</div>
+</div>
+
+<div class="skill-content" id="film">
+<img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1600&auto=format&fit=crop">
+<div class="skill-body">
+<h3>Filmmaking</h3>
+<p>
+Storytelling through cinematic composition, movement and thoughtful editing to create engaging visual narratives.
+</p>
+</div>
+</div>
+
+<div class="skill-content" id="editing">
+<img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1600&auto=format&fit=crop">
+<div class="skill-body">
+<h3>Editing</h3>
+<p>
+Professional workflows inspired by Adobe Premiere Pro and After Effects, blending motion graphics, pacing and polished finishing touches.
+</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="projects">
+
+<div class="title fade">
+<h2>Featured Projects</h2>
+<p>Elegant digital products crafted with care.</p>
+</div>
+
+<div class="project-grid">
+
+<div class="card fade">
+<img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Author Website</h3>
+<p>A premium website built for the Cornwall author of <strong>A Flower in Winter</strong>, focused on storytelling, performance and elegant design.</p>
+</div>
+</div>
+
+<div class="card fade">
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Modern Web Experiences</h3>
+<p>Responsive interfaces combining clean architecture, accessibility and polished interaction design.</p>
+</div>
+</div>
+
+<div class="card fade">
+<img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Creative Production</h3>
+<p>Photography, filmmaking and editing that enhance digital experiences with compelling visual storytelling.</p>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<section id="about">
+
+<div class="about fade">
+
+<div class="portrait">
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop">
+</div>
+
+<div>
+
+<h2 style="margin-bottom:20px;font-size:2.6rem;">About The Digital Workshop</h2>
+
+<p>
+The Digital Workshop began as the vision of one creative developer passionate about building elegant digital experiences. Today, it has grown into a three-person team, combining expertise in programming, photography, filmmaking and creative problem solving.
+</p>
+
+<br>
+
+<p>
+Programming remains at the heart of everything we create, supported by cinematic storytelling, beautiful imagery and refined editing to deliver memorable experiences across web and media.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="contact">
+
+<div class="contact fade">
+
+<div class="title">
+<h2>Let's Build Something Great</h2>
+<p>We'd love to hear about your next project.</p>
+</div>
+
+<div class="contact-box">
+
+<h3>Email</h3>
+
+<p style="margin-top:15px;">
+<a href="mailto:hello@thedigitalworkshop.com">
+hello@thedigitalworkshop.com
+</a>
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 The Digital Workshop. All rights reserved.
+</footer>
+
+<script>
+
+const toggle=document.getElementById("themeToggle");
+
+toggle.onclick=()=>{
+document.body.classList.toggle("dark");
+toggle.textContent=document.body.classList.contains("dark")?"🌙":"☀️";
+};
+
+const items=document.querySelectorAll(".skill-item");
+
+items.forEach(item=>{
+
+item.addEventListener("mouseenter",()=>{
+
+items.forEach(i=>i.classList.remove("active"));
+item.classList.add("active");
+
+document.querySelectorAll(".skill-content").forEach(c=>c.classList.remove("active"));
+
+document.getElementById(item.dataset.target).classList.add("active");
+
+});
+
+});
+
+const observer=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+},{threshold:.15});
+
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el));
+
+const nav=document.getElementById("navbar");
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>50){
+nav.classList.add("shrink");
+}else{
+nav.classList.remove("shrink");
+}
+
+if(window.scrollY>window.innerHeight/2){
+nav.classList.add("hide");
+}else{
+nav.classList.remove("hide");
+}
+
+});
+
+</script>
+
+</body>
+</html>
